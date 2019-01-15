@@ -1,0 +1,112 @@
+2015-9-1 =============================================================
+======================================================================
+CREATE TABLE IF NOT EXISTS `contacts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `subject` varchar(150) NOT NULL,
+  `message` text NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '1=unread,2=read,3=replied',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+
+
+2015-9-4 =============================================================
+======================================================================
+
+ALTER TABLE `users` ADD `plan_id` INT( 2 ) NOT NULL COMMENT '0 = user, Assign plan if Agent' AFTER `role` ,
+ADD `exp_date` TIMESTAMP NOT NULL COMMENT 'Exp Date of Agent Current Plan' AFTER `plan_id` 
+
+
+CREATE TABLE IF NOT EXISTS `payments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `payment_type` int(11) NOT NULL COMMENT '1 = plan ',
+  `plan_id` int(11) NOT NULL COMMENT 'Plan Id Define plan id',
+  `user_id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `remark` text NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+
+CREATE TABLE IF NOT EXISTS `plans` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(20) NOT NULL,
+  `list` int(4) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+INSERT INTO `room247`.`plans` (`id`, `title`, `list`, `status`) VALUES (NULL, 'BRONZE', '10', '1'), (NULL, 'SILVER', '20', '1');
+
+
+ALTER TABLE `enquiries` ADD `ans_by` INT NOT NULL AFTER `image` ,
+ADD `answer` TEXT NOT NULL AFTER `ans_by` ,
+ADD `ans_date` DATETIME NOT NULL AFTER `answer` 
+
+
+========= 21 Sept 2015
+
+CREATE TABLE IF NOT EXISTS `reports` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `not_available` int(11) NOT NULL,
+  `wrong_contact` int(11) NOT NULL,
+  `wrong_price` int(11) NOT NULL,
+  `wrong_location` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `room_id` int(11) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` int(11) NOT NULL DEFAULT '2',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE IF NOT EXISTS `favorites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `room_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` int(2) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+
+========= 24 Sept 2015
+
+CREATE TABLE IF NOT EXISTS `hits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `room_id` int(11) NOT NULL,
+  `ip_addr` varchar(16) NOT NULL COMMENT 'ip address of user''s system',
+  `user_id` int(11) NOT NULL COMMENT '0 = nouser, > 0 = user_id',
+  `created` datetime DEFAULT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+ALTER TABLE `users` ADD `contact_no` INT( 10 ) NOT NULL AFTER `image` ,
+ADD `device_id` VARCHAR( 100 ) NOT NULL AFTER `contact_no` ,
+ADD `device_type` VARCHAR( 10 ) NOT NULL AFTER `device_id` ,
+ADD `last_login` DATETIME NOT NULL AFTER `device_type` 
+
+===========  29 Sept 2015 (Jay)
+CREATE TABLE IF NOT EXISTS `post_requirements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `budget` varchar(50) NOT NULL,
+  `contact_no` varchar(15) NOT NULL,
+  `contact_person` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `status` int(11) NOT NULL COMMENT '''0''=>''inactive'',''1''=>''active''',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='this table contain posted requirements';
